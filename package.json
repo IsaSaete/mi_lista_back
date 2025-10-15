@@ -4,10 +4,22 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "start": "node ."
+    "start": "node .",
+    "prepare": "husky"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "@commitlint/cli": "^20.1.0",
+    "@commitlint/config-conventional": "^20.0.0",
+    "@eslint/js": "^9.37.0",
+    "eslint": "^9.37.0",
+    "globals": "^16.4.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.4",
+    "prettier": "3.6.2",
+    "typescript-eslint": "^8.46.1"
+  }
 }
