@@ -11,6 +11,7 @@ const config: Config = {
     "!**/*.d.ts",
     "!index.ts",
     "!server/startServer.ts",
+    "!**/types.ts",
   ],
   ...createDefaultPreset(),
 };
