@@ -8,6 +8,6 @@ export interface IngredientStructure {
 
 export interface ShoppingListStructure {
   _id: string;
-  items: IngredientStructure[];
+  ingredients: IngredientStructure[];
   updatedAt: Date;
 }

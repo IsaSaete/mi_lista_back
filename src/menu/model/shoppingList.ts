@@ -2,12 +2,12 @@ import { model, Schema } from "mongoose";
 import { ShoppingListStructure } from "../types.js";
 
 const shoppingListSchema = new Schema<ShoppingListStructure>({
-  items: [
+  ingredients: [
     {
       name: { type: String, required: true },
       category: { type: String, default: "otros" },
       purchasedAt: { type: Boolean, default: false },
-      createdAt: { type: Date, defauult: Date.now },
+      createdAt: { type: Date, default: Date.now },
     },
   ],
   updatedAt: { type: Date, default: Date.now },

@@ -11,6 +11,9 @@ const config: Config = {
     "!**/*.d.ts",
     "!index.ts",
     "!server/startServer.ts",
+    "!**/types.ts",
+    "!database/connectToDatabase.ts",
+    "!**/fixtures/**/*.ts",
   ],
   ...createDefaultPreset(),
 };
