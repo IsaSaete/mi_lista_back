@@ -1,4 +1,4 @@
-import { IngredientStructure } from "./types.js";
+import { IngredientStructure } from "../types.js";
 
 export const shoppingListFixtures: IngredientStructure[] = [
   {

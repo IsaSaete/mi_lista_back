@@ -2,7 +2,7 @@ import { Model } from "mongoose";
 import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
 import { Request, Response } from "express";
-import { shoppingListFixtures } from "../../fixtures.js";
+import { shoppingListFixtures } from "../../fixtures/fixtures.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
