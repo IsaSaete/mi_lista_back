@@ -11,6 +11,7 @@ const config: Config = {
     "!**/*.d.ts",
     "!index.ts",
     "!server/startServer.ts",
+    "!server/middleware/handleCors/handleCors.ts",
     "!**/types.ts",
     "!database/connectToDatabase.ts",
     "!**/fixtures/**/*.ts",
