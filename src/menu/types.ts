@@ -11,3 +11,9 @@ export interface ShoppingListStructure {
   ingredients: IngredientStructure[];
   updatedAt: Date;
 }
+
+export type IngredientDto = Omit<IngredientStructure, "_id">;
+
+export type GetShoppingListResponseBody = {
+  shoppingList: ShoppingListStructure;
+};
