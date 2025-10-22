@@ -11,7 +11,6 @@ const connectToDatabase = async (connectionString: string): Promise<void> => {
     debug("✅ Connected to dabase");
   } catch (error) {
     debug("❌ Error connecting to database:", error);
-    process.exit(1);
   }
 };
 
