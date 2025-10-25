@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { shoppingListFixtures } from "../../fixtures/fixtures.js";
 
 beforeEach(() => {
@@ -13,6 +13,8 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
   };
+
+  const next = jest.fn();
 
   describe("When it receives a response", () => {
     const req = {} as Request;
@@ -33,6 +35,7 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
       await shoppingListControoler.getShoppingList(
         req as Request,
         res as Response,
+        next as NextFunction,
       );
 
       expect(res.status).toHaveBeenCalledWith(200);
@@ -46,6 +49,7 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
       await shoppingListController.getShoppingList(
         req as Request,
         res as Response,
+        next as NextFunction,
       );
 
       expect(res.json).toHaveBeenCalledWith(
