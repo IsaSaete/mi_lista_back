@@ -17,3 +17,5 @@ export type IngredientDto = Omit<IngredientStructure, "_id">;
 export type GetShoppingListResponseBody = {
   shoppingList: ShoppingListStructure;
 };
+
+export type IngredientData = Omit<IngredientStructure, "_id">;

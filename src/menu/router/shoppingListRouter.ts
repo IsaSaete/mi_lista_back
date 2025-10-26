@@ -8,4 +8,6 @@ const shoppingListController = new ShoppingListController(ShoppingList);
 
 shoppingListRouter.get("/", shoppingListController.getShoppingList);
 
+shoppingListRouter.post("/", shoppingListController.addIngredient);
+
 export default shoppingListRouter;
