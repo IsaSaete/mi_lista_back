@@ -3,6 +3,7 @@ import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
 import { NextFunction, Request, Response } from "express";
 import { shoppingListFixtures } from "../../fixtures/fixtures.js";
+import ServerError from "../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -57,6 +58,30 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
           shoppingList: { ingredients: shoppingListFixtures },
         }),
       );
+    });
+  });
+
+  describe("When it receivas a response but the shoppingList doesnt`t exist", () => {
+    const req = {} as Request;
+
+    const shoppingListModel: Pick<Model<ShoppingListStructure>, "findOne"> = {
+      findOne: jest.fn().mockReturnValue({
+        lean: jest.fn().mockResolvedValue(null),
+      }),
+    };
+    test("Then it should call the next function with 404, 'Shopping List not found'", async () => {
+      const error = new ServerError(404, "Shopping List not found");
+      const shoppingListController = new ShoppingListController(
+        shoppingListModel as Model<ShoppingListStructure>,
+      );
+
+      await shoppingListController.getShoppingList(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
