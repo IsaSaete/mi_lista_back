@@ -69,6 +69,7 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
         lean: jest.fn().mockResolvedValue(null),
       }),
     };
+
     test("Then it should call the next function with 404, 'Shopping List not found'", async () => {
       const error = new ServerError(404, "Shopping List not found");
       const shoppingListController = new ShoppingListController(

@@ -6,7 +6,7 @@ const shoppingListSchema = new Schema<ShoppingListStructure>({
     {
       name: { type: String, required: true },
       category: { type: String, default: "otros" },
-      purchasedAt: { type: Boolean, default: false },
+      isPurchased: { type: Boolean, default: false },
       createdAt: { type: Date, default: Date.now },
     },
   ],

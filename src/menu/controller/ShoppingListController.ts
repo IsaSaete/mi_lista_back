@@ -1,6 +1,8 @@
 import { Model } from "mongoose";
 import { IngredientData, ShoppingListStructure } from "../types.js";
 import {
+  IngredientRequest,
+  IngredientResponse,
   NewIngredientRequest,
   NewIngredientResponse,
   ShoppingListControllerStructure,
@@ -41,7 +43,7 @@ class ShoppingListController implements ShoppingListControllerStructure {
     const newIngredient: IngredientData = {
       name: ingredientName,
       category: "otros",
-      purchasedAt: false,
+      isPurchased: false,
       createdAt: new Date(),
     };
 
@@ -51,6 +53,68 @@ class ShoppingListController implements ShoppingListControllerStructure {
     );
 
     res.status(201).json({ ingredient: newIngredient });
+  };
+
+  public toggleIngredientPurchasedStatus = async (
+    req: IngredientRequest,
+    res: IngredientResponse,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { ingredientId } = req.params;
+
+    const shoppingList = await this.shopingListModel
+      .findOne({ "ingredients._id": ingredientId })
+      .exec();
+
+    if (!shoppingList) {
+      const error = new ServerError(404, "Shopping list not found");
+
+      next(error);
+
+      return;
+    }
+
+    const ingredient = shoppingList.ingredients.find(
+      (ingredient) => ingredient._id.toString() === ingredientId,
+    );
+
+    if (!ingredient) {
+      const error = new ServerError(404, "Ingredient not found");
+
+      next(error);
+
+      return;
+    }
+
+    const isPurchasedToggled = !ingredient.isPurchased;
+
+    const updatedShoppingList = await this.shopingListModel
+      .findOneAndUpdate(
+        { "ingredients._id": ingredientId },
+        { $set: { "ingredients.$.isPurchased": isPurchasedToggled } },
+        { new: true },
+      )
+      .exec();
+
+    if (!updatedShoppingList) {
+      const error = new ServerError(404, "Ingredient not found");
+
+      next(error);
+
+      return;
+    }
+
+    const updatedIngredient = updatedShoppingList.ingredients.find(
+      (ingredient) => ingredient._id.toString() === ingredientId,
+    );
+
+    if (!updatedIngredient) {
+      const error = new ServerError(404, "Ingredient not found");
+      next(error);
+      return;
+    }
+
+    res.status(200).json({ ingredient: updatedIngredient });
   };
 }
 
