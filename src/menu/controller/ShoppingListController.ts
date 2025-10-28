@@ -1,5 +1,5 @@
-import { Model } from "mongoose";
-import { IngredientData, ShoppingListStructure } from "../types.js";
+import mongoose, { Model } from "mongoose";
+import { IngredientStructure, ShoppingListStructure } from "../types.js";
 import {
   IngredientRequest,
   IngredientResponse,
@@ -40,7 +40,10 @@ class ShoppingListController implements ShoppingListControllerStructure {
   ): Promise<void> => {
     const { name: ingredientName } = req.body;
 
-    const newIngredient: IngredientData = {
+    const newIngredientId = new mongoose.Types.ObjectId();
+
+    const newIngredient: IngredientStructure = {
+      _id: newIngredientId.toString(),
       name: ingredientName,
       category: "otros",
       isPurchased: false,
