@@ -2,7 +2,7 @@ export interface IngredientStructure {
   _id: string;
   name: string;
   category: string;
-  purchasedAt: boolean;
+  isPurchased: boolean;
   createdAt: Date;
 }
 

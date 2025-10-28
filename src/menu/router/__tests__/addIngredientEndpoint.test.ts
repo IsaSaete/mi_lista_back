@@ -42,7 +42,7 @@ describe("Given the POST /shopping-list endpoint", () => {
         expect.objectContaining({
           name: "Alcachofas",
           category: "otros",
-          purchasedAt: false,
+          isPurchased: false,
         }),
       );
     });

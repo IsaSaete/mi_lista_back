@@ -41,7 +41,7 @@ describe("Given the addIngredient method", () => {
       const expectedIngredient = {
         name: "Alcachofas",
         category: "otros",
-        purchasedAt: false,
+        isPurchased: false,
       };
 
       const shoppingListController = new ShoppingListController(

@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
-import { IngredientData, ShoppingListStructure } from "../types.js";
+import {
+  IngredientData,
+  IngredientStructure,
+  ShoppingListStructure,
+} from "../types.js";
 
 export interface ShoppingListControllerStructure {
   getShoppingList: (
@@ -10,6 +14,11 @@ export interface ShoppingListControllerStructure {
   addIngredient: (
     req: NewIngredientRequest,
     res: NewIngredientResponse,
+  ) => Promise<void>;
+  toggleIngredientPurchasedStatus: (
+    req: IngredientRequest,
+    res: IngredientResponse,
+    next: NextFunction,
   ) => Promise<void>;
 }
 
@@ -29,3 +38,16 @@ export type ShoppingListResponse = Response<ShoppingListBodyResponse>;
 export type NewIngredientBodyResponse = { ingredient: IngredientData };
 
 export type NewIngredientResponse = Response<NewIngredientBodyResponse>;
+
+export type IngredientParams = { ingredientId: string };
+
+export type IngredientBody = { ingredient: IngredientStructure };
+
+export type IngredientRequest = Request<
+  IngredientParams,
+  Record<string, unknown>,
+  IngredientBody,
+  Record<string, unknown>
+>;
+
+export type IngredientResponse = Response<IngredientBody>;
