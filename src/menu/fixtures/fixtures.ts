@@ -1,7 +1,7 @@
 import { IngredientStructure, ShoppingListStructure } from "../types.js";
 
 export const tomate: IngredientStructure = {
-  _id: "1",
+  _id: "a3f9d7c2e5b8147ad09c3e1f",
   name: "Tomate",
   category: "Verdura",
   isPurchased: false,
@@ -9,7 +9,7 @@ export const tomate: IngredientStructure = {
 };
 
 export const tomatePurchased: IngredientStructure = {
-  _id: "1",
+  _id: "a3f9d7c2e5b8147ad09c3e1f",
   name: "Tomate",
   category: "Verdura",
   isPurchased: true,

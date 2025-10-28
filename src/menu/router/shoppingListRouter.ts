@@ -10,4 +10,9 @@ shoppingListRouter.get("/", shoppingListController.getShoppingList);
 
 shoppingListRouter.post("/", shoppingListController.addIngredient);
 
+shoppingListRouter.patch(
+  "/ingredients/:ingredientId",
+  shoppingListController.toggleIngredientPurchasedStatus,
+);
+
 export default shoppingListRouter;
