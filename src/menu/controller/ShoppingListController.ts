@@ -94,7 +94,12 @@ class ShoppingListController implements ShoppingListControllerStructure {
     const updatedShoppingList = await this.shopingListModel
       .findOneAndUpdate(
         { "ingredients._id": ingredientId },
-        { $set: { "ingredients.$.isPurchased": isPurchasedToggled } },
+        {
+          $set: {
+            "ingredients.$.isPurchased": isPurchasedToggled,
+            "ingredients.$.createdAt": new Date(),
+          },
+        },
         { new: true },
       )
       .exec();
