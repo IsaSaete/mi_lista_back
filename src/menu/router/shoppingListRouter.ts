@@ -15,4 +15,9 @@ shoppingListRouter.patch(
   shoppingListController.toggleIngredientPurchasedStatus,
 );
 
+shoppingListRouter.delete(
+  "/ingredients/:ingredientId",
+  shoppingListController.deleteIngredient,
+);
+
 export default shoppingListRouter;
