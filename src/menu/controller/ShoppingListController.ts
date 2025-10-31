@@ -133,7 +133,7 @@ class ShoppingListController implements ShoppingListControllerStructure {
     const { ingredientId } = req.params;
 
     const updatedShoppingList = await this.shopingListModel
-      .findOneAndDelete(
+      .findOneAndUpdate(
         { "ingredients._id": ingredientId },
         {
           $pull: {
