@@ -124,6 +124,47 @@ class ShoppingListController implements ShoppingListControllerStructure {
 
     res.status(200).json({ ingredient: updatedIngredient });
   };
+
+  public deleteIngredient = async (
+    req: IngredientRequest,
+    res: IngredientResponse,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { ingredientId } = req.params;
+
+    const updatedShoppingList = await this.shopingListModel
+      .findOneAndUpdate(
+        { "ingredients._id": ingredientId },
+        {
+          $pull: {
+            ingredients: { _id: ingredientId },
+          },
+        },
+      )
+      .exec();
+
+    if (!updatedShoppingList) {
+      const error = new ServerError(404, "Shopping list not found");
+
+      next(error);
+
+      return;
+    }
+
+    const deletedIngredient = updatedShoppingList.ingredients.find(
+      (ingredient) => ingredient._id.toString() === ingredientId,
+    );
+
+    if (!deletedIngredient) {
+      const error = new ServerError(404, "Ingredient not found");
+
+      next(error);
+
+      return;
+    }
+
+    res.status(200).json({ ingredient: deletedIngredient });
+  };
 }
 
 export default ShoppingListController;

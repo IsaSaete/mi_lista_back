@@ -17,7 +17,7 @@ export const tomatePurchased: IngredientStructure = {
 };
 
 export const aceiteOliva: IngredientStructure = {
-  _id: "2",
+  _id: "a3f9d7c2e5b8147ad09c3e1e",
   name: "Aceite de oliva virgen extra",
   category: "Aceite",
   isPurchased: false,
@@ -25,7 +25,7 @@ export const aceiteOliva: IngredientStructure = {
 };
 
 export const espagueti: IngredientStructure = {
-  _id: "3",
+  _id: "a3f9d7c2e5b8147ad09c3e13",
   name: "Pasta espagueti",
   category: "Cereal",
   isPurchased: false,
@@ -33,7 +33,7 @@ export const espagueti: IngredientStructure = {
 };
 
 export const albahaca: IngredientStructure = {
-  _id: "4",
+  _id: "a3f9d7c2e5b8147ad09c3e14",
   name: "Albahaca fresca",
   category: "Hierba aromática",
   isPurchased: false,
@@ -41,7 +41,7 @@ export const albahaca: IngredientStructure = {
 };
 
 export const parmesano: IngredientStructure = {
-  _id: "5",
+  _id: "a3f9d7c2e5b8147ad09c3e15",
   name: "Queso parmesano",
   category: "Lácteo",
   isPurchased: false,
@@ -64,6 +64,6 @@ export const shoppingList: ShoppingListStructure = {
 
 export const updateShoppingList: ShoppingListStructure = {
   _id: "1",
-  ingredients: [tomatePurchased],
+  ingredients: [tomatePurchased, aceiteOliva],
   updatedAt: new Date("2025-10-06T17:20:00Z"),
 };
