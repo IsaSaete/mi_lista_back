@@ -20,6 +20,11 @@ export interface ShoppingListControllerStructure {
     res: IngredientResponse,
     next: NextFunction,
   ) => Promise<void>;
+  deleteIngredient: (
+    req: IngredientRequest,
+    res: IngredientResponse,
+    next: NextFunction,
+  ) => Promise<void>;
 }
 
 export type NewIngredientBody = { name: string };
