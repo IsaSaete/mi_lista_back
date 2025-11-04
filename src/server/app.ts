@@ -6,6 +6,7 @@ import handleErrors from "./middleware/hanldeErrors/handleErrors.js";
 import handleEndpointNotFound from "./middleware/handleEndpointNotFound/handleEndpointNotFound.js";
 import shoppingListRouter from "../menu/shoppingList/router/shoppingListRouter.js";
 import handleCors from "./middleware/handleCors/handleCors.js";
+import weeklyMenuRouter from "../menu/weeklyMenu/router/weeklyMenuRouter.js";
 
 const app = express();
 
@@ -20,6 +21,8 @@ app.use(express.json());
 app.get("/", checkHealthStatus);
 
 app.use("/shopping-list", shoppingListRouter);
+
+app.use("/weekly-menu", weeklyMenuRouter);
 
 app.use(handleEndpointNotFound);
 
