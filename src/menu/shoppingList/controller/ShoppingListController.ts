@@ -9,7 +9,7 @@ import {
   ShoppingListResponse,
 } from "./types.js";
 import { NextFunction, Request } from "express";
-import ServerError from "../../server/serverError/serverError.js";
+import ServerError from "../../../server/serverError/serverError.js";
 
 class ShoppingListController implements ShoppingListControllerStructure {
   constructor(
@@ -119,6 +119,7 @@ class ShoppingListController implements ShoppingListControllerStructure {
     if (!updatedIngredient) {
       const error = new ServerError(404, "Ingredient not found");
       next(error);
+
       return;
     }
 

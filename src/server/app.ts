@@ -4,7 +4,7 @@ import morgan from "morgan";
 import checkHealthStatus from "./middleware/checkHealthStatus/checkHealthStatus.js";
 import handleErrors from "./middleware/hanldeErrors/handleErrors.js";
 import handleEndpointNotFound from "./middleware/handleEndpointNotFound/handleEndpointNotFound.js";
-import shoppingListRouter from "../menu/router/shoppingListRouter.js";
+import shoppingListRouter from "../menu/shoppingList/router/shoppingListRouter.js";
 import handleCors from "./middleware/handleCors/handleCors.js";
 
 const app = express();
