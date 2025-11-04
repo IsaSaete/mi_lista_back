@@ -9,7 +9,7 @@ import {
 import { Model } from "mongoose";
 import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
-import ServerError from "../../../server/serverError/serverError.js";
+import ServerError from "../../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();

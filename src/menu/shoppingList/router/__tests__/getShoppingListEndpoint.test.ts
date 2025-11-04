@@ -1,9 +1,9 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
-import connectToDatabase from "../../../database/connectToDatabase.js";
+import connectToDatabase from "../../../../database/connectToDatabase.js";
 import ShoppingList from "../../model/shoppingList.js";
-import app from "../../../server/app.js";
+import app from "../../../../server/app.js";
 import { aceiteOlivaDto, tomateDto } from "../../fixtures/fixturesDto.js";
 import { GetShoppingListResponseBody } from "../../types.js";
 

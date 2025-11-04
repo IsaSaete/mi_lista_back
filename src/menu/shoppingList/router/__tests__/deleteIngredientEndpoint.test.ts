@@ -1,10 +1,10 @@
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import request from "supertest";
-import connectToDatabase from "../../../database/connectToDatabase.js";
+import connectToDatabase from "../../../../database/connectToDatabase.js";
 import ShoppingList from "../../model/shoppingList.js";
 import { aceiteOliva } from "../../fixtures/fixtures.js";
-import app from "../../../server/app.js";
+import app from "../../../../server/app.js";
 import { IngredientBody } from "../../controller/types.js";
 
 let server: MongoMemoryServer;

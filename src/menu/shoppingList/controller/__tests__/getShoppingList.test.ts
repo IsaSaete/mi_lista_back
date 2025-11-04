@@ -3,7 +3,7 @@ import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
 import { NextFunction, Request, Response } from "express";
 import { shoppingListFixtures } from "../../fixtures/fixtures.js";
-import ServerError from "../../../server/serverError/serverError.js";
+import ServerError from "../../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
