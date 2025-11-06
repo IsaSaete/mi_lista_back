@@ -1,6 +1,6 @@
 export type DayOfWeek = "L" | "M" | "X" | "J" | "V" | "S" | "D";
 export interface MealStructure {
-  firstPlate: string;
+  firstPlate?: string;
   secondPlate?: string;
   dessert?: string;
 }
@@ -19,4 +19,11 @@ export interface WeeklyMenuStructure {
   updatedAt: Date;
 }
 
-export type NewMealData = Partial<WeeklyMenuData>;
+export type NewMealData = {
+  weeklyMenu: {
+    [key in DayOfWeek]?: {
+      lunch?: MealStructure;
+      dinner?: MealStructure;
+    };
+  };
+};
