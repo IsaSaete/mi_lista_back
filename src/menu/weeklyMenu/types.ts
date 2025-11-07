@@ -19,7 +19,7 @@ export interface WeeklyMenuStructure {
   updatedAt: Date;
 }
 
-export type NewMealData = {
+export type MenuDayData = {
   weeklyMenu: {
     [key in DayOfWeek]?: {
       lunch?: MealStructure;

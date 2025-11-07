@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import {
+  DayMenuStructure,
   DayOfWeek,
   MealStructure,
-  NewMealData,
-  WeeklyMenuData,
+  MenuDayData,
 } from "../types.js";
 
 export interface WeeklyMenuControllerStructure {
@@ -12,10 +12,15 @@ export interface WeeklyMenuControllerStructure {
     res: NewMealResponse,
     next: NextFunction,
   ) => Promise<void>;
-  getWeeklyMenu: (req: Request, res: WeeklyMenuResponse) => Promise<void>;
+  getWeeklyMenu: (
+    req: WeeklyMenuRequest,
+    res: WeeklyMenuResponse,
+  ) => Promise<void>;
 }
 
 export type MealType = "lunch" | "dinner";
+
+export type WeeklyMenuQuery = { day: DayOfWeek };
 
 export interface NewMealRequestBody {
   day: DayOfWeek;
@@ -30,10 +35,17 @@ export type NewMealRequest = Request<
   Record<string, unknown>
 >;
 
-export type NewMealBodyResponse = NewMealData;
+export type NewMealBodyResponse = MenuDayData;
 
 export type NewMealResponse = Response<NewMealBodyResponse>;
 
 export type WeeklyMenuResponse = Response<WeeklyMenuBodyResponse>;
 
-export type WeeklyMenuBodyResponse = WeeklyMenuData;
+export type WeeklyMenuBodyResponse = DayMenuStructure;
+
+export type WeeklyMenuRequest = Request<
+  Record<string, unknown>,
+  Record<string, unknown>,
+  Record<string, unknown>,
+  WeeklyMenuQuery
+>;

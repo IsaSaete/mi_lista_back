@@ -25,13 +25,13 @@ const dayMenuSchema = new Schema<DayMenuStructure>(
 const weeklyMenuSchema = new Schema<WeeklyMenuStructure>(
   {
     weeklyMenu: {
-      L: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      M: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      X: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      J: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      V: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      S: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
-      D: { type: dayMenuSchema, default: () => ({ lunch: {}, dinner: {} }) },
+      L: { type: dayMenuSchema },
+      M: { type: dayMenuSchema },
+      X: { type: dayMenuSchema },
+      J: { type: dayMenuSchema },
+      V: { type: dayMenuSchema },
+      S: { type: dayMenuSchema },
+      D: { type: dayMenuSchema },
     },
   },
   { timestamps: true },
