@@ -1,9 +1,13 @@
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import { NewMealRequest, NewMealResponse } from "../types.js";
-import { tuesdayLunch } from "../../fixtures/fixtures.js";
 import { WeeklyMenuStructure } from "../../types.js";
 import { Model } from "mongoose";
 import WeeklyMenuController from "../WeeklyMenuController.js";
+import {
+  tuesdayLunchRequest,
+  tuesdayLunchResponse,
+} from "../../fixtures/fixtures.js";
+import ServerError from "../../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -15,16 +19,23 @@ describe("Given the addNewMeal method", () => {
     json: jest.fn(),
   };
 
+  const next = jest.fn();
+
   describe("When it receives a tueday lunch data", () => {
     const req: Pick<NewMealRequest, "body"> = {
-      body: tuesdayLunch,
+      body: tuesdayLunchRequest,
     };
 
-    const weeklyMenuModel: Pick<Model<WeeklyMenuStructure>, "create"> = {
-      create: jest.fn().mockResolvedValue({ weeklyMenu: tuesdayLunch }),
+    const weeklyMenuModel: Pick<
+      Model<WeeklyMenuStructure>,
+      "findOneAndUpdate"
+    > = {
+      findOneAndUpdate: jest.fn().mockResolvedValue(tuesdayLunchResponse),
     };
 
-    test("Then it should call the response's method with 201 status code", async () => {
+    test("Then it should call the response's method with 200 status code", async () => {
+      const expectedStatusCode = 200;
+
       const weeklyMenuController = new WeeklyMenuController(
         weeklyMenuModel as Model<WeeklyMenuStructure>,
       );
@@ -32,12 +43,13 @@ describe("Given the addNewMeal method", () => {
       await weeklyMenuController.addNewMeal(
         req as NewMealRequest,
         res as NewMealResponse,
+        next as NextFunction,
       );
 
-      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.status).toHaveBeenCalledWith(expectedStatusCode);
     });
 
-    test("Then it should call the response's method json with tuesday lunc data", async () => {
+    test("Then it should call the response's method json with tuesday lunch data", async () => {
       const weeklyMenuController = new WeeklyMenuController(
         weeklyMenuModel as Model<WeeklyMenuStructure>,
       );
@@ -45,9 +57,42 @@ describe("Given the addNewMeal method", () => {
       await weeklyMenuController.addNewMeal(
         req as NewMealRequest,
         res as NewMealResponse,
+        next as NextFunction,
       );
 
-      expect(res.json).toHaveBeenCalledWith({ weeklyMenu: tuesdayLunch });
+      expect(res.json).toHaveBeenCalledWith(tuesdayLunchResponse);
+    });
+
+    describe("When it receives a tuesday lunch data but the database update fails", () => {
+      const req: Pick<NewMealRequest, "body"> = {
+        body: tuesdayLunchRequest,
+      };
+
+      const weeklyMenuModel: Pick<
+        Model<WeeklyMenuStructure>,
+        "findOneAndUpdate"
+      > = {
+        findOneAndUpdate: jest.fn().mockResolvedValue(null),
+      };
+
+      test("Then it should call the next function with a 500 status code and 'Error al actualizar el menu'", async () => {
+        const expectedError = new ServerError(
+          500,
+          "Error al actualizar el menú",
+        );
+
+        const weeklyMenuController = new WeeklyMenuController(
+          weeklyMenuModel as Model<WeeklyMenuStructure>,
+        );
+
+        await weeklyMenuController.addNewMeal(
+          req as NewMealRequest,
+          res as NewMealResponse,
+          next as NextFunction,
+        );
+
+        expect(next).toHaveBeenCalledWith(expectedError);
+      });
     });
   });
 });

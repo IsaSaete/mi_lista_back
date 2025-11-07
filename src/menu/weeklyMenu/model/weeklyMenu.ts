@@ -7,11 +7,11 @@ import {
 
 const mealSchema = new Schema<MealStructure>(
   {
-    firstPlate: { type: String, required: true },
+    firstPlate: { type: String },
     secondPlate: { type: String },
     dessert: { type: String },
   },
-  { _id: false },
+  { _id: false, minimize: false },
 );
 
 const dayMenuSchema = new Schema<DayMenuStructure>(
@@ -19,19 +19,19 @@ const dayMenuSchema = new Schema<DayMenuStructure>(
     lunch: { type: mealSchema },
     dinner: { type: mealSchema },
   },
-  { _id: false },
+  { _id: false, minimize: false },
 );
 
 const weeklyMenuSchema = new Schema<WeeklyMenuStructure>(
   {
     weeklyMenu: {
-      L: { type: dayMenuSchema, default: {} },
-      M: { type: dayMenuSchema, default: {} },
-      X: { type: dayMenuSchema, default: {} },
-      J: { type: dayMenuSchema, default: {} },
-      V: { type: dayMenuSchema, default: {} },
-      S: { type: dayMenuSchema, default: {} },
-      D: { type: dayMenuSchema, default: {} },
+      L: { type: dayMenuSchema },
+      M: { type: dayMenuSchema },
+      X: { type: dayMenuSchema },
+      J: { type: dayMenuSchema },
+      V: { type: dayMenuSchema },
+      S: { type: dayMenuSchema },
+      D: { type: dayMenuSchema },
     },
   },
   { timestamps: true },

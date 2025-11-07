@@ -3,7 +3,10 @@ import mongoose from "mongoose";
 import request from "supertest";
 import connectToDatabase from "../../../../database/connectToDatabase.js";
 import app from "../../../../server/app.js";
-import { tuesdayLunch } from "../../fixtures/fixtures.js";
+import {
+  tuesdayLunchRequest,
+  tuesdayLunchResponse,
+} from "../../fixtures/fixtures.js";
 import { NewMealBodyResponse } from "../../controller/types.js";
 
 let server: MongoMemoryServer;
@@ -24,16 +27,16 @@ afterAll(async () => {
 describe("Given the POST /weekly-menu endpoint", () => {
   describe("When it receives a request with tuesday lunch data", () => {
     test("Then it should respond wit a 201 status code ant Tuesday lunch meal", async () => {
-      const expectedStatus = 201;
+      const expectedStatus = 200;
 
       const response = await request(app)
         .post("/weekly-menu")
-        .send(tuesdayLunch);
+        .send(tuesdayLunchRequest);
 
       const body = (await response.body) as NewMealBodyResponse;
 
       expect(response.status).toBe(expectedStatus);
-      expect(body.weeklyMenu.M).toEqual(tuesdayLunch.M);
+      expect(body).toEqual(tuesdayLunchResponse);
     });
   });
 });
