@@ -8,4 +8,6 @@ const weeklyMenuController = new WeeklyMenuController(WeeklyMenu);
 
 weeklyMenuRouter.post("/", weeklyMenuController.addNewMeal);
 
+weeklyMenuRouter.get("/", weeklyMenuController.getWeeklyMenu);
+
 export default weeklyMenuRouter;
