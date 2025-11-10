@@ -2,7 +2,7 @@ import {
   NewMealBodyResponse,
   NewMealRequestBody,
 } from "../controller/types.js";
-import { DayMenuStructure, MenuDayData } from "../types.js";
+import { DayMenuStructure, WeeklyMenuStructure } from "../types.js";
 
 export const tuesdayLunchRequest: NewMealRequestBody = {
   day: "M",
@@ -39,7 +39,8 @@ export const monday: DayMenuStructure = {
   },
 };
 
-export const weeklyMenu: MenuDayData = {
+export const weeklyMenu: WeeklyMenuStructure = {
+  _id: "123456789acbdef123456789",
   weeklyMenu: {
     L: {
       lunch: {
@@ -56,10 +57,18 @@ export const weeklyMenu: MenuDayData = {
         firstPlate: "Tortilla de patata y calabacín",
       },
     },
+    X: { lunch: {}, dinner: {} },
+    J: { lunch: {}, dinner: {} },
+    V: { lunch: {}, dinner: {} },
+    S: { lunch: {}, dinner: {} },
+    D: { lunch: {}, dinner: {} },
   },
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };
 
-export const weeklyMenuEmpty: MenuDayData = {
+export const weeklyMenuEmpty: WeeklyMenuStructure = {
+  _id: "123456789acbdef123456780",
   weeklyMenu: {
     L: { lunch: {}, dinner: {} },
     M: { lunch: {}, dinner: {} },
@@ -69,9 +78,6 @@ export const weeklyMenuEmpty: MenuDayData = {
     S: { lunch: {}, dinner: {} },
     D: { lunch: {}, dinner: {} },
   },
-};
-
-export const mondayEmpty: DayMenuStructure = {
-  lunch: {},
-  dinner: {},
+  createdAt: new Date(),
+  updatedAt: new Date(),
 };

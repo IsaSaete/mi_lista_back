@@ -4,11 +4,10 @@ import {
   NewMealRequest,
   NewMealResponse,
   WeeklyMenuControllerStructure,
-  WeeklyMenuRequest,
   WeeklyMenuResponse,
 } from "./types.js";
 import { WeeklyMenuStructure } from "../types.js";
-import { NextFunction } from "express";
+import { NextFunction, Request } from "express";
 import ServerError from "../../../server/serverError/serverError.js";
 
 class WeeklyMenuController implements WeeklyMenuControllerStructure {
@@ -52,19 +51,10 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
   };
 
   public getWeeklyMenu = async (
-    req: WeeklyMenuRequest,
+    req: Request,
     res: WeeklyMenuResponse,
   ): Promise<void> => {
-    let day = req.query.day;
-
-    if (!day) {
-      day = "L";
-    }
-
-    let menu = await this.weeklyMenuModel.findOne(
-      {},
-      { [`weeklyMenu.${day}`]: 1 },
-    );
+    let menu = await this.weeklyMenuModel.findOne();
 
     if (!menu) {
       menu = await this.weeklyMenuModel.create({
@@ -80,9 +70,7 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
       });
     }
 
-    const dayMenu = menu.weeklyMenu[day];
-
-    res.status(200).json(dayMenu);
+    res.status(200).json(menu.weeklyMenu);
   };
 }
 
