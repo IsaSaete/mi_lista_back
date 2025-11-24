@@ -1,8 +1,8 @@
 import { model, Schema } from "mongoose";
-import { IUser } from "../userTypes.js";
+import { IUserStructure } from "../userTypes.js";
 import bcrypt from "bcryptjs";
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUserStructure>(
   {
     email: {
       type: String,
@@ -44,4 +44,4 @@ userSchema.methods.comparePassword = async function (
   return isMatch;
 };
 
-export default model<IUser>("User", userSchema);
+export default model<IUserStructure>("User", userSchema);
