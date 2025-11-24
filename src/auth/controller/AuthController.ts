@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction } from "express";
 import {
   AuthControllerStructure,
-  AuthResponse,
+  RegisterResponse,
   RegisterRequest,
 } from "./types.js";
 import { IUserStructure } from "../userTypes.js";
@@ -14,7 +14,7 @@ class AuthController implements AuthControllerStructure {
 
   public registerUser = async (
     req: RegisterRequest,
-    res: AuthResponse,
+    res: RegisterResponse,
     next: NextFunction,
   ): Promise<void> => {
     const { email, name, password } = req.body;

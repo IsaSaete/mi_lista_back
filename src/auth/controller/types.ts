@@ -1,18 +1,15 @@
 import { NextFunction, Request, Response } from "express";
+import { IUserCreate } from "../userTypes.js";
 
 export interface AuthControllerStructure {
   registerUser: (
     req: RegisterRequest,
-    res: AuthResponse,
+    res: RegisterResponse,
     next: NextFunction,
   ) => Promise<void>;
 }
 
-export interface RegisterRequestBody {
-  email: string;
-  password: string;
-  name: string;
-}
+export type RegisterRequestBody = IUserCreate;
 
 export type RegisterRequest = Request<
   Record<string, unknown>,
@@ -21,12 +18,13 @@ export type RegisterRequest = Request<
   Record<string, unknown>
 >;
 
-export interface AuthResponseBody {
+export type AuthResponseBody = {
   token: string;
   user: {
     id: string;
     email: string;
     name: string;
   };
-}
-export type AuthResponse = Response<AuthResponseBody>;
+};
+
+export type RegisterResponse = Response<AuthResponseBody>;

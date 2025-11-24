@@ -5,7 +5,7 @@ import {
   isaNewUser,
   isaUserRegistered,
 } from "../../fixtures/fixturesAuth.js";
-import { AuthResponse, RegisterRequest } from "../types.js";
+import { RegisterResponse, RegisterRequest } from "../types.js";
 import { IUserStructure } from "../../userTypes.js";
 import AuthController from "../AuthController.js";
 import ServerError from "../../../server/serverError/serverError.js";
@@ -40,7 +40,7 @@ describe("Given the userRegister method", () => {
 
       await authController.registerUser(
         req as RegisterRequest,
-        res as AuthResponse,
+        res as RegisterResponse,
         next as NextFunction,
       );
 
@@ -54,7 +54,7 @@ describe("Given the userRegister method", () => {
 
       await authController.registerUser(
         req as RegisterRequest,
-        res as AuthResponse,
+        res as RegisterResponse,
         next as NextFunction,
       );
 
@@ -89,7 +89,7 @@ describe("Given the userRegister method", () => {
 
       await authController.registerUser(
         req as RegisterRequest,
-        res as AuthResponse,
+        res as RegisterResponse,
         next as NextFunction,
       );
 

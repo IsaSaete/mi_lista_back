@@ -44,4 +44,6 @@ userSchema.methods.comparePassword = async function (
   return isMatch;
 };
 
-export default model<IUserStructure>("User", userSchema);
+const AuthUser = model<IUserStructure>("User", userSchema);
+
+export default AuthUser;
