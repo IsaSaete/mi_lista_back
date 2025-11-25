@@ -15,7 +15,7 @@ beforeEach(() => {
   process.env.JWT_SECRET = "test_secret_key_for_jwt";
 });
 
-describe("Given the userRegister method", () => {
+describe("Given the registerUser method", () => {
   const res: Pick<Response, "status" | "json"> = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn(),
