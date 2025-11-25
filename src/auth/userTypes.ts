@@ -5,7 +5,9 @@ export interface IUserStructure {
   name: string;
   createdAt?: Date;
   updatedAt?: Date;
+  comparePassword(candidatePassword: string): Promise<boolean>;
 }
+
 export interface IUserCreate {
   email: string;
   password: string;

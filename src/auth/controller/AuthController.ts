@@ -5,6 +5,8 @@ import {
   AuthControllerStructure,
   RegisterResponse,
   RegisterRequest,
+  LoginRequest,
+  LoginResponse,
 } from "./types.js";
 import { IUserStructure } from "../userTypes.js";
 import ServerError from "../../server/serverError/serverError.js";
@@ -43,6 +45,43 @@ class AuthController implements AuthControllerStructure {
     };
 
     res.status(201).json(userRegistered);
+  };
+
+  public loginUser = async (
+    req: LoginRequest,
+    res: LoginResponse,
+    next: NextFunction,
+  ): Promise<void> => {
+    const { email, password } = req.body;
+
+    const user = await this.authUserModel.findOne({ email });
+
+    if (!user) {
+      const error = new ServerError(401, "Credenciales inválidas");
+      next(error);
+
+      return;
+    }
+
+    const isValidPassword = await user.comparePassword(password);
+
+    if (!isValidPassword) {
+      const error = new ServerError(401, "Credenciales inválidas");
+      next(error);
+
+      return;
+    }
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+      expiresIn: "30d",
+    });
+
+    const userRegistered = {
+      token,
+      user: { id: user._id, email: user.email, name: user.name },
+    };
+
+    res.status(200).json(userRegistered);
   };
 }
 

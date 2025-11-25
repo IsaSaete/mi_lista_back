@@ -7,6 +7,12 @@ export interface AuthControllerStructure {
     res: RegisterResponse,
     next: NextFunction,
   ) => Promise<void>;
+
+  loginUser: (
+    req: LoginRequest,
+    res: LoginResponse,
+    next: NextFunction,
+  ) => Promise<void>;
 }
 
 export type RegisterRequestBody = IUserCreate;
@@ -15,6 +21,15 @@ export type RegisterRequest = Request<
   Record<string, unknown>,
   Record<string, unknown>,
   RegisterRequestBody,
+  Record<string, unknown>
+>;
+
+export type LoginRequestBody = { email: string; password: string };
+
+export type LoginRequest = Request<
+  Record<string, unknown>,
+  Record<string, unknown>,
+  LoginRequestBody,
   Record<string, unknown>
 >;
 
@@ -28,3 +43,5 @@ export type AuthResponseBody = {
 };
 
 export type RegisterResponse = Response<AuthResponseBody>;
+
+export type LoginResponse = Response<AuthResponseBody>;
