@@ -7,6 +7,7 @@ import handleEndpointNotFound from "./middleware/handleEndpointNotFound/handleEn
 import shoppingListRouter from "../menu/shoppingList/router/shoppingListRouter.js";
 import handleCors from "./middleware/handleCors/handleCors.js";
 import weeklyMenuRouter from "../menu/weeklyMenu/router/weeklyMenuRouter.js";
+import authRouter from "../auth/router/authRouter.js";
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.get("/", checkHealthStatus);
 app.use("/shopping-list", shoppingListRouter);
 
 app.use("/weekly-menu", weeklyMenuRouter);
+
+app.use("/auth", authRouter);
 
 app.use(handleEndpointNotFound);
 

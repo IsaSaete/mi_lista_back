@@ -9,6 +9,7 @@ on:
 
 env:
   ALLOWED_ORIGIN_PATTERNS: ${{ vars.ALLOWED_ORIGIN_PATTERNS}}
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
 jobs:
   sonarcloud:
