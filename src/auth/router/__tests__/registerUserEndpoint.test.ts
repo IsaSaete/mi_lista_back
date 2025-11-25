@@ -20,15 +20,16 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await mongoose.disconnect();
+
   await server.stop();
 });
 
 beforeEach(async () => {
-  await AuthUser.deleteMany({}); // ← Limpiar antes de cada test
+  await AuthUser.deleteMany({});
 });
 
 describe("Given the POST/auth/register endpoint", () => {
-  describe("When it receives a request wuith 'Isa' data new user", () => {
+  describe("When it receives a request with 'Isa' data new user", () => {
     test("Then it should respond with a 201 status code and Isa data registered", async () => {
       const expectedName = "Isabel";
       const expectedStatusCode = 201;
