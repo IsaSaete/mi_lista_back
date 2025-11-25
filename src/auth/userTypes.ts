@@ -11,3 +11,7 @@ export interface IUserCreate {
   password: string;
   name: string;
 }
+
+export interface ResponsBodyError {
+  error: string;
+}
