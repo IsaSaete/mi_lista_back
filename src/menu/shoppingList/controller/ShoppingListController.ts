@@ -21,7 +21,17 @@ class ShoppingListController implements ShoppingListControllerStructure {
     res: ShoppingListResponse,
     next: NextFunction,
   ): Promise<void> => {
-    const shoppingList = await this.shopingListModel.findOne().lean();
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
+
+    const shoppingList = await this.shopingListModel.findOne({ userId }).lean();
 
     if (!shoppingList) {
       const error = new ServerError(404, "Shopping List not found");
