@@ -47,8 +47,18 @@ class ShoppingListController implements ShoppingListControllerStructure {
   public addIngredient = async (
     req: NewIngredientRequest,
     res: NewIngredientResponse,
+    next: NextFunction,
   ): Promise<void> => {
     const { name: ingredientName } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
 
     const newIngredientId = new mongoose.Types.ObjectId();
 
@@ -60,10 +70,20 @@ class ShoppingListController implements ShoppingListControllerStructure {
       createdAt: new Date(),
     };
 
-    await this.shopingListModel.updateOne(
-      {},
-      { $push: { ingredients: newIngredient } },
+    const shoppingList = await this.shopingListModel.findOneAndUpdate(
+      { userId },
+      {
+        $push: { ingredients: newIngredient },
+        $set: { updatedAt: new Date() },
+      },
+      { new: true, upsert: true },
     );
+
+    if (!shoppingList) {
+      const error = new ServerError(404, "Lista de la compra no encontrada");
+      next(error);
+      return;
+    }
 
     res.status(201).json({ ingredient: newIngredient });
   };
