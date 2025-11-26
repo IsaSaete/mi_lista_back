@@ -1,5 +1,8 @@
 import { NextFunction, Response } from "express";
-import { aceiteOliva, updateShoppingList } from "../../fixtures/fixtures.js";
+import {
+  aceiteOliva,
+  updateShoppingListUser1,
+} from "../../fixtures/fixtures.js";
 import { Model } from "mongoose";
 import { ShoppingListStructure } from "../../types.js";
 import ShoppingListController from "../ShoppingListController.js";
@@ -28,7 +31,7 @@ describe("Given the deletIngredient method of controller", () => {
       "findOneAndUpdate"
     > = {
       findOneAndUpdate: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updateShoppingList),
+        exec: jest.fn().mockResolvedValue(updateShoppingListUser1),
       }),
     };
 
@@ -73,7 +76,7 @@ describe("Given the deletIngredient method of controller", () => {
       "findOneAndUpdate"
     > = {
       findOneAndUpdate: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updateShoppingList),
+        exec: jest.fn().mockResolvedValue(updateShoppingListUser1),
       }),
     };
 

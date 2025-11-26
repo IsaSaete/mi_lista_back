@@ -56,14 +56,16 @@ export const shoppingListFixtures: IngredientStructure[] = [
   parmesano,
 ];
 
-export const shoppingList: ShoppingListStructure = {
+export const shoppingListUser1: ShoppingListStructure = {
   _id: "1",
+  userId: "507f1f77bcf86cd799439011",
   ingredients: [tomate],
   updatedAt: new Date("2025-10-06T17:20:00Z"),
 };
 
-export const updateShoppingList: ShoppingListStructure = {
+export const updateShoppingListUser1: ShoppingListStructure = {
   _id: "1",
+  userId: "507f1f77bcf86cd799439011",
   ingredients: [tomatePurchased, aceiteOliva],
   updatedAt: new Date("2025-10-06T17:20:00Z"),
 };

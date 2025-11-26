@@ -1,10 +1,10 @@
 import { NextFunction, Response } from "express";
 import { IngredientRequest, IngredientResponse } from "../types.js";
 import {
-  shoppingList,
+  shoppingListUser1,
   tomate,
   tomatePurchased,
-  updateShoppingList,
+  updateShoppingListUser1,
 } from "../../fixtures/fixtures.js";
 import { Model } from "mongoose";
 import { ShoppingListStructure } from "../../types.js";
@@ -32,11 +32,11 @@ describe("Given the toggleIngredientPurchasedStatus method of ShoppingListContro
       Model<ShoppingListStructure>,
       "findOne" | "findOneAndUpdate"
     > = {
-      findOne: jest
-        .fn()
-        .mockReturnValue({ exec: jest.fn().mockResolvedValue(shoppingList) }),
+      findOne: jest.fn().mockReturnValue({
+        exec: jest.fn().mockResolvedValue(shoppingListUser1),
+      }),
       findOneAndUpdate: jest.fn().mockReturnValue({
-        exec: jest.fn().mockResolvedValue(updateShoppingList),
+        exec: jest.fn().mockResolvedValue(updateShoppingListUser1),
       }),
     };
 
@@ -113,9 +113,9 @@ describe("Given the toggleIngredientPurchasedStatus method of ShoppingListContro
       Model<ShoppingListStructure>,
       "findOne" | "findOneAndUpdate"
     > = {
-      findOne: jest
-        .fn()
-        .mockReturnValue({ exec: jest.fn().mockResolvedValue(shoppingList) }),
+      findOne: jest.fn().mockReturnValue({
+        exec: jest.fn().mockResolvedValue(shoppingListUser1),
+      }),
       findOneAndUpdate: jest.fn().mockReturnValue({
         exec: jest.fn().mockResolvedValue(null),
       }),

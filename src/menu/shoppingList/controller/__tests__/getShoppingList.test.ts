@@ -18,7 +18,11 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
   const next = jest.fn();
 
   describe("When it receives a response", () => {
-    const req = {} as Request;
+    const req = {
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
+    } as Request;
 
     const shoppingListModel: Pick<Model<ShoppingListStructure>, "findOne"> = {
       findOne: jest.fn().mockReturnValue({
@@ -61,8 +65,12 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
     });
   });
 
-  describe("When it receivas a response but the shoppingList doesnt`t exist", () => {
-    const req = {} as Request;
+  describe("When it receives a response but the shoppingList doesnt`t exist", () => {
+    const req = {
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
+    } as Request;
 
     const shoppingListModel: Pick<Model<ShoppingListStructure>, "findOne"> = {
       findOne: jest.fn().mockReturnValue({
@@ -72,6 +80,31 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
 
     test("Then it should call the next function with 404, 'Shopping List not found'", async () => {
       const error = new ServerError(404, "Shopping List not found");
+      const shoppingListController = new ShoppingListController(
+        shoppingListModel as Model<ShoppingListStructure>,
+      );
+
+      await shoppingListController.getShoppingList(
+        req as Request,
+        res as Response,
+        next as NextFunction,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe("When it receives a response but the user is not authenthicated", () => {
+    const req = {} as Request;
+
+    const shoppingListModel: Pick<Model<ShoppingListStructure>, "findOne"> = {
+      findOne: jest.fn().mockReturnValue({
+        lean: jest.fn().mockResolvedValue(null),
+      }),
+    };
+
+    test("Then it should call the next function with 401, 'Usuario no autenticado'", async () => {
+      const error = new ServerError(401, "Usuario no autenticado");
       const shoppingListController = new ShoppingListController(
         shoppingListModel as Model<ShoppingListStructure>,
       );
