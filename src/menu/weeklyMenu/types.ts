@@ -14,6 +14,7 @@ export type WeeklyMenuData = Record<DayOfWeek, DayMenuStructure>;
 
 export interface WeeklyMenuStructure {
   _id: string;
+  userId: string;
   weeklyMenu: WeeklyMenuData;
   createdAt: Date;
   updatedAt: Date;

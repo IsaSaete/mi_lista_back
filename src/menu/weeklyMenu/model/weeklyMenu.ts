@@ -24,6 +24,11 @@ const dayMenuSchema = new Schema<DayMenuStructure>(
 
 const weeklyMenuSchema = new Schema<WeeklyMenuStructure>(
   {
+    userId: {
+      type: String,
+      ref: "User",
+      required: true,
+    },
     weeklyMenu: {
       L: { type: dayMenuSchema },
       M: { type: dayMenuSchema },
