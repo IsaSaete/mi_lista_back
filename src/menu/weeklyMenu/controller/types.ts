@@ -12,7 +12,11 @@ export interface WeeklyMenuControllerStructure {
     res: NewMealResponse,
     next: NextFunction,
   ) => Promise<void>;
-  getWeeklyMenu: (req: Request, res: WeeklyMenuResponse) => Promise<void>;
+  getWeeklyMenu: (
+    req: Request,
+    res: WeeklyMenuResponse,
+    next: NextFunction,
+  ) => Promise<void>;
 }
 
 export type MealType = "lunch" | "dinner";

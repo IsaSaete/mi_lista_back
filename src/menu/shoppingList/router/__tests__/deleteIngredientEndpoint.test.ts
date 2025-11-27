@@ -33,7 +33,7 @@ describe("Given the DELETE /ingredients/:ingredientId endpoint", () => {
       const expectedStatus = 200;
       const userId = "test-user-id";
 
-      await ShoppingList.create({ userId: userId, ingredients: [aceiteOliva] });
+      await ShoppingList.create({ userId, ingredients: [aceiteOliva] });
 
       const response = await request(app)
         .delete(`/shopping-list/ingredients/${aceiteOliva._id}`)

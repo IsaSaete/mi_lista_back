@@ -7,7 +7,9 @@ const weeklyMenuRouter = Router();
 
 const weeklyMenuController = new WeeklyMenuController(WeeklyMenu);
 
-weeklyMenuRouter.post("/", verifyToken, weeklyMenuController.addNewMeal);
+weeklyMenuRouter.use(verifyToken);
+
+weeklyMenuRouter.post("/", weeklyMenuController.addNewMeal);
 
 weeklyMenuRouter.get("/", weeklyMenuController.getWeeklyMenu);
 
