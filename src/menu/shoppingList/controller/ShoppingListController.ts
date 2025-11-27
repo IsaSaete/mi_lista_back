@@ -162,39 +162,51 @@ class ShoppingListController implements ShoppingListControllerStructure {
     next: NextFunction,
   ): Promise<void> => {
     const { ingredientId } = req.params;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
+
+    const shoppingList = await this.shopingListModel.findOne({ userId });
+
+    if (!shoppingList) {
+      const error = new ServerError(404, "Shoppinglist no encontrada");
+
+      next(error);
+
+      return;
+    }
+
+    const ingredientToDelete = shoppingList.ingredients.find(
+      (ingredient) => ingredient._id.toString() === ingredientId,
+    );
+
+    if (!ingredientToDelete) {
+      const error = new ServerError(404, "Ingrediente no encontrado");
+      next(error);
+      return;
+    }
 
     const updatedShoppingList = await this.shopingListModel
       .findOneAndUpdate(
-        { "ingredients._id": ingredientId },
-        {
-          $pull: {
-            ingredients: { _id: ingredientId },
-          },
-        },
+        { userId },
+        { $pull: { ingredients: { _id: ingredientId } } },
+        { new: true },
       )
       .exec();
 
     if (!updatedShoppingList) {
-      const error = new ServerError(404, "Shopping list not found");
-
+      const error = new ServerError(500, "Error al eliminar el ingrediente");
       next(error);
-
       return;
     }
 
-    const deletedIngredient = updatedShoppingList.ingredients.find(
-      (ingredient) => ingredient._id.toString() === ingredientId,
-    );
-
-    if (!deletedIngredient) {
-      const error = new ServerError(404, "Ingredient not found");
-
-      next(error);
-
-      return;
-    }
-
-    res.status(200).json({ ingredient: deletedIngredient });
+    res.status(200).json({ ingredient: ingredientToDelete });
   };
 }
 

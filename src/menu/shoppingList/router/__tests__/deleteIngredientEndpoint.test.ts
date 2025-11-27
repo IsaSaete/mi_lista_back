@@ -6,6 +6,7 @@ import ShoppingList from "../../model/shoppingList.js";
 import { aceiteOliva } from "../../fixtures/fixtures.js";
 import app from "../../../../server/app.js";
 import { IngredientBody } from "../../controller/types.js";
+import { testToken } from "../../fixtures/authFixtures.js";
 
 let server: MongoMemoryServer;
 
@@ -30,12 +31,13 @@ describe("Given the DELETE /ingredients/:ingredientId endpoint", () => {
   describe("When it receives a request with Aceite's ingredint id", () => {
     test("then it should respond with a 200 status code and Aceite ingredient data", async () => {
       const expectedStatus = 200;
+      const userId = "test-user-id";
 
-      await ShoppingList.create({ ingredients: [aceiteOliva] });
+      await ShoppingList.create({ userId: userId, ingredients: [aceiteOliva] });
 
-      const response = await request(app).delete(
-        `/shopping-list/ingredients/${aceiteOliva._id}`,
-      );
+      const response = await request(app)
+        .delete(`/shopping-list/ingredients/${aceiteOliva._id}`)
+        .set("Authorization", `Bearer ${testToken}`);
 
       const body = response.body as IngredientBody;
 

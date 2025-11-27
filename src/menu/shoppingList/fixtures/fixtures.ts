@@ -69,3 +69,17 @@ export const updateShoppingListUser1: ShoppingListStructure = {
   ingredients: [tomatePurchased, aceiteOliva],
   updatedAt: new Date("2025-10-06T17:20:00Z"),
 };
+
+export const shoppingListWithAceite: ShoppingListStructure = {
+  _id: "1",
+  userId: "507f1f77bcf86cd799439011",
+  ingredients: [parmesano, aceiteOliva],
+  updatedAt: new Date("2025-10-06T17:20:00Z"),
+};
+
+export const shoppingListWithoutAceite: ShoppingListStructure = {
+  _id: "1",
+  userId: "507f1f77bcf86cd799439011",
+  ingredients: [parmesano],
+  updatedAt: new Date("2025-10-06T17:20:00Z"),
+};

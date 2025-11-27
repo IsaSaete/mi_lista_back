@@ -22,6 +22,7 @@ shoppingListRouter.patch(
 
 shoppingListRouter.delete(
   "/ingredients/:ingredientId",
+  verifyToken,
   shoppingListController.deleteIngredient,
 );
 
