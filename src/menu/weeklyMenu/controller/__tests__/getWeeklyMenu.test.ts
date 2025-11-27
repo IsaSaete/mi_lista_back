@@ -4,6 +4,7 @@ import { WeeklyMenuStructure } from "../../types.js";
 import { weeklyMenu, weeklyMenuEmpty } from "../../fixtures/fixtures.js";
 import WeeklyMenuController from "../WeeklyMenuController.js";
 import { WeeklyMenuResponse } from "../types.js";
+import ServerError from "../../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -102,6 +103,34 @@ describe("Given the getWeeklyMenu method of weeklyMenuController", () => {
       );
 
       expect(res.json).toHaveBeenCalledWith(weeklyMenuEmpty.weeklyMenu);
+    });
+  });
+
+  describe("When it receives a request but the user is not authenticated", () => {
+    const req = {} as Request;
+
+    const weeklyMenuModel: Pick<
+      Model<WeeklyMenuStructure>,
+      "findOne" | "create"
+    > = {
+      findOne: jest.fn().mockResolvedValue(null),
+      create: jest.fn().mockResolvedValue(weeklyMenuEmpty),
+    };
+
+    test("Then it should call the next function with a 401, 'Usuario no autenticado", async () => {
+      const expectedError = new ServerError(401, "Usuario no autenticado");
+
+      const weeklyMenuController = new WeeklyMenuController(
+        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      );
+
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
+      );
+
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });

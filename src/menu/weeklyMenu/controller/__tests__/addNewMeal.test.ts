@@ -65,40 +65,66 @@ describe("Given the addNewMeal method", () => {
 
       expect(res.json).toHaveBeenCalledWith(tuesdayLunchResponse);
     });
+  });
 
-    describe("When it receives a tuesday lunch data but the database update fails", () => {
-      const req: Pick<NewMealRequest, "body" | "user"> = {
-        body: tuesdayLunchRequest,
-        user: {
-          userId: "507f1f77bcf86cd799439011",
-        },
-      };
+  describe("When it receives a tuesday lunch data but the database update fails", () => {
+    const req: Pick<NewMealRequest, "body" | "user"> = {
+      body: tuesdayLunchRequest,
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
+    };
 
-      const weeklyMenuModel: Pick<
-        Model<WeeklyMenuStructure>,
-        "findOneAndUpdate"
-      > = {
-        findOneAndUpdate: jest.fn().mockResolvedValue(null),
-      };
+    const weeklyMenuModel: Pick<
+      Model<WeeklyMenuStructure>,
+      "findOneAndUpdate"
+    > = {
+      findOneAndUpdate: jest.fn().mockResolvedValue(null),
+    };
 
-      test("Then it should call the next function with a 500 status code and 'Error al actualizar el menu'", async () => {
-        const expectedError = new ServerError(
-          500,
-          "Error al actualizar el menú",
-        );
+    test("Then it should call the next function with a 500 status code and 'Error al actualizar el menu'", async () => {
+      const expectedError = new ServerError(500, "Error al actualizar el menú");
 
-        const weeklyMenuController = new WeeklyMenuController(
-          weeklyMenuModel as Model<WeeklyMenuStructure>,
-        );
+      const weeklyMenuController = new WeeklyMenuController(
+        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      );
 
-        await weeklyMenuController.addNewMeal(
-          req as NewMealRequest,
-          res as NewMealResponse,
-          next as NextFunction,
-        );
+      await weeklyMenuController.addNewMeal(
+        req as NewMealRequest,
+        res as NewMealResponse,
+        next as NextFunction,
+      );
 
-        expect(next).toHaveBeenCalledWith(expectedError);
-      });
+      expect(next).toHaveBeenCalledWith(expectedError);
+    });
+  });
+
+  describe("When it receives a tuesday data but the user is not authenticated", () => {
+    const req: Pick<NewMealRequest, "body" | "user"> = {
+      body: tuesdayLunchRequest,
+    };
+
+    const weeklyMenuModel: Pick<
+      Model<WeeklyMenuStructure>,
+      "findOneAndUpdate"
+    > = {
+      findOneAndUpdate: jest.fn().mockResolvedValue(null),
+    };
+
+    test("Then it should call the next function with a 401, 'Usuario no autenticado", async () => {
+      const expectedError = new ServerError(401, "Usuario no autenticado");
+
+      const weeklyMenuController = new WeeklyMenuController(
+        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      );
+
+      await weeklyMenuController.addNewMeal(
+        req as NewMealRequest,
+        res as NewMealResponse,
+        next as NextFunction,
+      );
+
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });
