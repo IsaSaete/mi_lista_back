@@ -6,6 +6,7 @@ import ShoppingList from "../../model/shoppingList.js";
 import app from "../../../../server/app.js";
 import { alcachofa } from "../../fixtures/fixturesDto.js";
 import { NewIngredientBodyResponse } from "../../controller/types.js";
+import { testToken } from "../../fixtures/authFixtures.js";
 
 let server: MongoMemoryServer;
 
@@ -33,7 +34,8 @@ describe("Given the POST /shopping-list endpoint", () => {
 
       const response = await request(app)
         .post("/shopping-list")
-        .send({ name: alcachofa.name });
+        .send({ name: alcachofa.name })
+        .set("Authorization", `Bearer ${testToken}`);
 
       const body = (await response).body as NewIngredientBodyResponse;
 

@@ -14,6 +14,7 @@ export interface ShoppingListControllerStructure {
   addIngredient: (
     req: NewIngredientRequest,
     res: NewIngredientResponse,
+    next: NextFunction,
   ) => Promise<void>;
   toggleIngredientPurchasedStatus: (
     req: IngredientRequest,

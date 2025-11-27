@@ -2,6 +2,11 @@ import { model, Schema } from "mongoose";
 import { ShoppingListStructure } from "../types.js";
 
 const shoppingListSchema = new Schema<ShoppingListStructure>({
+  userId: {
+    type: String,
+    ref: "User",
+    required: true,
+  },
   ingredients: [
     {
       name: { type: String, required: true },
