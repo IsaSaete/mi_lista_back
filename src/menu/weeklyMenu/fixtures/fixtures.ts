@@ -40,6 +40,7 @@ export const monday: DayMenuStructure = {
 };
 
 export const weeklyMenu: WeeklyMenuStructure = {
+  userId: "123456789acbdef123456789",
   _id: "123456789acbdef123456789",
   weeklyMenu: {
     L: {
@@ -68,6 +69,7 @@ export const weeklyMenu: WeeklyMenuStructure = {
 };
 
 export const weeklyMenuEmpty: WeeklyMenuStructure = {
+  userId: "123456789acbdef123456789",
   _id: "123456789acbdef123456780",
   weeklyMenu: {
     L: { lunch: {}, dinner: {} },

@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { Model } from "mongoose";
 import { WeeklyMenuStructure } from "../../types.js";
 import { weeklyMenu, weeklyMenuEmpty } from "../../fixtures/fixtures.js";
 import WeeklyMenuController from "../WeeklyMenuController.js";
 import { WeeklyMenuResponse } from "../types.js";
+import ServerError from "../../../../server/serverError/serverError.js";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -15,8 +16,14 @@ describe("Given the getWeeklyMenu method of weeklyMenuController", () => {
     json: jest.fn(),
   };
 
+  const next = jest.fn();
+
   describe("When it receives a request", () => {
-    const req = {} as Request;
+    const req = {
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
+    } as Request;
 
     const weeklyMenuModel: Pick<Model<WeeklyMenuStructure>, "findOne"> = {
       findOne: jest.fn().mockResolvedValue(weeklyMenu),
@@ -29,7 +36,11 @@ describe("Given the getWeeklyMenu method of weeklyMenuController", () => {
         weeklyMenuModel as Model<WeeklyMenuStructure>,
       );
 
-      await weeklyMenuController.getWeeklyMenu(req, res as WeeklyMenuResponse);
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
+      );
 
       expect(res.status).toHaveBeenCalledWith(expectedStatus);
     });
@@ -39,13 +50,63 @@ describe("Given the getWeeklyMenu method of weeklyMenuController", () => {
         weeklyMenuModel as Model<WeeklyMenuStructure>,
       );
 
-      await weeklyMenuController.getWeeklyMenu(req, res as WeeklyMenuResponse);
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
+      );
 
       expect(res.json).toHaveBeenCalledWith(weeklyMenu.weeklyMenu);
     });
   });
 
   describe("When it receives the first request and no menu exists in database", () => {
+    const req = {
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
+    } as Request;
+
+    const weeklyMenuModel: Pick<
+      Model<WeeklyMenuStructure>,
+      "findOne" | "create"
+    > = {
+      findOne: jest.fn().mockResolvedValue(null),
+      create: jest.fn().mockResolvedValue(weeklyMenuEmpty),
+    };
+
+    test("Then it should call the response's method status with a 201", async () => {
+      const expectedStatus = 201;
+
+      const weeklyMenuController = new WeeklyMenuController(
+        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      );
+
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
+      );
+
+      expect(res.status).toHaveBeenCalledWith(expectedStatus);
+    });
+
+    test("Then it should call the response's method json with a empty menu", async () => {
+      const weeklyMenuController = new WeeklyMenuController(
+        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      );
+
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
+      );
+
+      expect(res.json).toHaveBeenCalledWith(weeklyMenuEmpty.weeklyMenu);
+    });
+  });
+
+  describe("When it receives a request but the user is not authenticated", () => {
     const req = {} as Request;
 
     const weeklyMenuModel: Pick<
@@ -56,24 +117,20 @@ describe("Given the getWeeklyMenu method of weeklyMenuController", () => {
       create: jest.fn().mockResolvedValue(weeklyMenuEmpty),
     };
 
-    test("Then it should call the response's method status with a 200", async () => {
+    test("Then it should call the next function with a 401, 'Usuario no autenticado", async () => {
+      const expectedError = new ServerError(401, "Usuario no autenticado");
+
       const weeklyMenuController = new WeeklyMenuController(
         weeklyMenuModel as Model<WeeklyMenuStructure>,
       );
 
-      await weeklyMenuController.getWeeklyMenu(req, res as WeeklyMenuResponse);
-
-      expect(res.status).toHaveBeenCalledWith(200);
-    });
-
-    test("Then it should call the response's method json with a empty menu", async () => {
-      const weeklyMenuController = new WeeklyMenuController(
-        weeklyMenuModel as Model<WeeklyMenuStructure>,
+      await weeklyMenuController.getWeeklyMenu(
+        req,
+        res as WeeklyMenuResponse,
+        next as NextFunction,
       );
 
-      await weeklyMenuController.getWeeklyMenu(req, res as WeeklyMenuResponse);
-
-      expect(res.json).toHaveBeenCalledWith(weeklyMenuEmpty.weeklyMenu);
+      expect(next).toHaveBeenCalledWith(expectedError);
     });
   });
 });

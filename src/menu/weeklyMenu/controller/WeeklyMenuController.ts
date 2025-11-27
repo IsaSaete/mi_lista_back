@@ -19,9 +19,18 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
     next: NextFunction,
   ): Promise<void> => {
     const { day, mealType, mealData } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
 
     const updateMenu = await this.weeklyMenuModel.findOneAndUpdate(
-      {},
+      { userId },
       {
         [`weeklyMenu.${day}.${mealType}`]: mealData,
       },
@@ -53,11 +62,23 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
   public getWeeklyMenu = async (
     req: Request,
     res: WeeklyMenuResponse,
+    next: NextFunction,
   ): Promise<void> => {
-    let menu = await this.weeklyMenuModel.findOne();
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
+
+    let menu = await this.weeklyMenuModel.findOne({ userId });
 
     if (!menu) {
       menu = await this.weeklyMenuModel.create({
+        userId,
         weeklyMenu: {
           L: { lunch: {}, dinner: {} },
           M: { lunch: {}, dinner: {} },
@@ -68,6 +89,10 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
           D: { lunch: {}, dinner: {} },
         },
       });
+
+      res.status(201).json(menu.weeklyMenu);
+
+      return;
     }
 
     res.status(200).json(menu.weeklyMenu);
