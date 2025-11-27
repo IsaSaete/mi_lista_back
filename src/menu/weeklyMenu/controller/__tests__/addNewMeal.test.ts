@@ -22,8 +22,11 @@ describe("Given the addNewMeal method", () => {
   const next = jest.fn();
 
   describe("When it receives a tueday lunch data", () => {
-    const req: Pick<NewMealRequest, "body"> = {
+    const req: Pick<NewMealRequest, "body" | "user"> = {
       body: tuesdayLunchRequest,
+      user: {
+        userId: "507f1f77bcf86cd799439011",
+      },
     };
 
     const weeklyMenuModel: Pick<
@@ -64,8 +67,11 @@ describe("Given the addNewMeal method", () => {
     });
 
     describe("When it receives a tuesday lunch data but the database update fails", () => {
-      const req: Pick<NewMealRequest, "body"> = {
+      const req: Pick<NewMealRequest, "body" | "user"> = {
         body: tuesdayLunchRequest,
+        user: {
+          userId: "507f1f77bcf86cd799439011",
+        },
       };
 
       const weeklyMenuModel: Pick<

@@ -8,6 +8,7 @@ import {
   tuesdayLunchResponse,
 } from "../../fixtures/fixtures.js";
 import { NewMealBodyResponse } from "../../controller/types.js";
+import { testToken } from "../../../shoppingList/fixtures/authFixtures.js";
 
 let server: MongoMemoryServer;
 
@@ -26,12 +27,13 @@ afterAll(async () => {
 
 describe("Given the POST /weekly-menu endpoint", () => {
   describe("When it receives a request with tuesday lunch data", () => {
-    test("Then it should respond wit a 201 status code ant Tuesday lunch meal", async () => {
+    test("Then it should respond wit a 200 status code ant Tuesday lunch meal", async () => {
       const expectedStatus = 200;
 
       const response = await request(app)
         .post("/weekly-menu")
-        .send(tuesdayLunchRequest);
+        .send(tuesdayLunchRequest)
+        .set("Authorization", `Bearer ${testToken}`);
 
       const body = (await response.body) as NewMealBodyResponse;
 

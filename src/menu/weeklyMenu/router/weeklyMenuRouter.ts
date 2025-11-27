@@ -1,12 +1,13 @@
 import { Router } from "express";
 import WeeklyMenuController from "../controller/WeeklyMenuController.js";
 import WeeklyMenu from "../model/weeklyMenu.js";
+import { verifyToken } from "../../../auth/middleware/verifyToken.js";
 
 const weeklyMenuRouter = Router();
 
 const weeklyMenuController = new WeeklyMenuController(WeeklyMenu);
 
-weeklyMenuRouter.post("/", weeklyMenuController.addNewMeal);
+weeklyMenuRouter.post("/", verifyToken, weeklyMenuController.addNewMeal);
 
 weeklyMenuRouter.get("/", weeklyMenuController.getWeeklyMenu);
 

@@ -19,9 +19,18 @@ class WeeklyMenuController implements WeeklyMenuControllerStructure {
     next: NextFunction,
   ): Promise<void> => {
     const { day, mealType, mealData } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
+
+      next(error);
+
+      return;
+    }
 
     const updateMenu = await this.weeklyMenuModel.findOneAndUpdate(
-      {},
+      { userId },
       {
         [`weeklyMenu.${day}.${mealType}`]: mealData,
       },
