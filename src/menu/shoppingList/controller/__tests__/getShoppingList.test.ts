@@ -78,8 +78,8 @@ describe("Given the getShoppingList method of ShoppingListController", () => {
       }),
     };
 
-    test("Then it should call the next function with 404, 'Shopping List not found'", async () => {
-      const error = new ServerError(404, "Shopping List not found");
+    test("Then it should call the next function with 404, 'Lista de la compra no encontrada'", async () => {
+      const error = new ServerError(404, "Lista de la compra no encontrada");
       const shoppingListController = new ShoppingListController(
         shoppingListModel as Model<ShoppingListStructure>,
       );

@@ -1,4 +1,5 @@
 import mongoose, { Model } from "mongoose";
+import { NextFunction, Request } from "express";
 import { IngredientStructure, ShoppingListStructure } from "../types.js";
 import {
   IngredientRequest,
@@ -8,7 +9,6 @@ import {
   ShoppingListControllerStructure,
   ShoppingListResponse,
 } from "./types.js";
-import { NextFunction, Request } from "express";
 import ServerError from "../../../server/serverError/serverError.js";
 
 class ShoppingListController implements ShoppingListControllerStructure {
@@ -34,7 +34,7 @@ class ShoppingListController implements ShoppingListControllerStructure {
     const shoppingList = await this.shopingListModel.findOne({ userId }).lean();
 
     if (!shoppingList) {
-      const error = new ServerError(404, "Shopping List not found");
+      const error = new ServerError(404, "Lista de la compra no encontrada");
 
       next(error);
 
@@ -94,40 +94,50 @@ class ShoppingListController implements ShoppingListControllerStructure {
     next: NextFunction,
   ): Promise<void> => {
     const { ingredientId } = req.params;
+    const userId = req.user?.userId;
 
-    const shoppingList = await this.shopingListModel
-      .findOne({ "ingredients._id": ingredientId })
-      .exec();
-
-    if (!shoppingList) {
-      const error = new ServerError(404, "Shopping list not found");
+    if (!userId) {
+      const error = new ServerError(401, "Usuario no autenticado");
 
       next(error);
 
       return;
     }
 
-    const ingredient = shoppingList.ingredients.find(
+    const shoppingList = await this.shopingListModel.findOne({ userId });
+
+    if (!shoppingList) {
+      const error = new ServerError(404, "Lista de la compra no encontrada");
+
+      next(error);
+
+      return;
+    }
+
+    const ingredientToToggle = shoppingList.ingredients.find(
       (ingredient) => ingredient._id.toString() === ingredientId,
     );
 
-    if (!ingredient) {
-      const error = new ServerError(404, "Ingredient not found");
+    if (!ingredientToToggle) {
+      const error = new ServerError(404, "Ingrediente no encontrado");
 
       next(error);
 
       return;
     }
-
-    const isPurchasedToggled = !ingredient.isPurchased;
+    const updatedIngredient = {
+      ...ingredientToToggle,
+      isPurchased: !ingredientToToggle.isPurchased,
+      updatedAt: new Date(),
+    };
 
     const updatedShoppingList = await this.shopingListModel
       .findOneAndUpdate(
-        { "ingredients._id": ingredientId },
+        { userId, "ingredients._id": ingredientId },
         {
           $set: {
-            "ingredients.$.isPurchased": isPurchasedToggled,
-            "ingredients.$.createdAt": new Date(),
+            "ingredients.$.isPurchased": updatedIngredient.isPurchased,
+            "ingredients.$.updatedAt": updatedIngredient.updatedAt,
           },
         },
         { new: true },
@@ -135,19 +145,8 @@ class ShoppingListController implements ShoppingListControllerStructure {
       .exec();
 
     if (!updatedShoppingList) {
-      const error = new ServerError(404, "Ingredient not found");
+      const error = new ServerError(500, "Error al actualizar el ingrediente");
 
-      next(error);
-
-      return;
-    }
-
-    const updatedIngredient = updatedShoppingList.ingredients.find(
-      (ingredient) => ingredient._id.toString() === ingredientId,
-    );
-
-    if (!updatedIngredient) {
-      const error = new ServerError(404, "Ingredient not found");
       next(error);
 
       return;
@@ -175,7 +174,7 @@ class ShoppingListController implements ShoppingListControllerStructure {
     const shoppingList = await this.shopingListModel.findOne({ userId });
 
     if (!shoppingList) {
-      const error = new ServerError(404, "Shoppinglist no encontrada");
+      const error = new ServerError(404, "Lista de la compra no encontrada");
 
       next(error);
 

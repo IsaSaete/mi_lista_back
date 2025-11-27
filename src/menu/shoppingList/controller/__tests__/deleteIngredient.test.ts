@@ -124,8 +124,8 @@ describe("Given the deletIngredient method of controller", () => {
       }),
     };
 
-    test("Then it should call the next function with 404, 'Shoppinglist no encontrada'", async () => {
-      const error = new ServerError(404, "Shoppinglist no encontrada");
+    test("Then it should call the next function with 404, 'Lista de la compra no encontrada'", async () => {
+      const error = new ServerError(404, "Lista de la compra no encontrada");
 
       const shoppingListController = new ShoppingListController(
         shopingListModel as Model<ShoppingListStructure>,

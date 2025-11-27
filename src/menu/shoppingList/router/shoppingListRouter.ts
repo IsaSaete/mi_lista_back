@@ -17,6 +17,7 @@ shoppingListRouter.post("/", verifyToken, shoppingListController.addIngredient);
 
 shoppingListRouter.patch(
   "/ingredients/:ingredientId",
+  verifyToken,
   shoppingListController.toggleIngredientPurchasedStatus,
 );
 
