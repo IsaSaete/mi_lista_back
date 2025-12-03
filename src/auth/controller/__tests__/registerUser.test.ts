@@ -15,6 +15,28 @@ beforeEach(() => {
   process.env.JWT_SECRET = "test_secret_key_for_jwt";
 });
 
+jest.mock("../../../menu/shoppingList/model/shoppingList.js", () => ({
+  create: jest.fn().mockResolvedValue({
+    userId: "123456789012345678901234",
+    ingredients: [],
+  }),
+}));
+
+jest.mock("../../../menu/weeklyMenu/model/weeklyMenu.js", () => ({
+  create: jest.fn().mockResolvedValue({
+    userId: "123456789012345678901234",
+    weeklyMenu: {
+      L: { lunch: {}, dinner: {} },
+      M: { lunch: {}, dinner: {} },
+      X: { lunch: {}, dinner: {} },
+      J: { lunch: {}, dinner: {} },
+      V: { lunch: {}, dinner: {} },
+      S: { lunch: {}, dinner: {} },
+      D: { lunch: {}, dinner: {} },
+    },
+  }),
+}));
+
 describe("Given the registerUser method", () => {
   const res: Pick<Response, "status" | "json"> = {
     status: jest.fn().mockReturnThis(),

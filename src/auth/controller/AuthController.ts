@@ -8,8 +8,10 @@ import {
   LoginRequest,
   LoginResponse,
 } from "./types.js";
-import { IUserStructure } from "../userTypes.js";
+import { IUserCreate, IUserStructure } from "../userTypes.js";
 import ServerError from "../../server/serverError/serverError.js";
+import ShoppingList from "../../menu/shoppingList/model/shoppingList.js";
+import WeeklyMenu from "../../menu/weeklyMenu/model/weeklyMenu.js";
 
 class AuthController implements AuthControllerStructure {
   constructor(private readonly authUserModel: Model<IUserStructure>) {}
@@ -31,9 +33,23 @@ class AuthController implements AuthControllerStructure {
       return;
     }
 
-    const userData = { email, name, password };
+    const userData: IUserCreate = { email, name, password };
 
     const newUser = await this.authUserModel.create(userData);
+
+    await ShoppingList.create({ userId: newUser._id, ingredients: [] });
+    await WeeklyMenu.create({
+      userId: newUser._id,
+      weeklyMenu: {
+        L: { lunch: {}, dinner: {} },
+        M: { lunch: {}, dinner: {} },
+        X: { lunch: {}, dinner: {} },
+        J: { lunch: {}, dinner: {} },
+        V: { lunch: {}, dinner: {} },
+        S: { lunch: {}, dinner: {} },
+        D: { lunch: {}, dinner: {} },
+      },
+    });
 
     const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET!, {
       expiresIn: "30d",
