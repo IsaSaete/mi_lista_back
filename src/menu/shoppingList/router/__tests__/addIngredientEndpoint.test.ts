@@ -49,4 +49,40 @@ describe("Given the POST /shopping-list endpoint", () => {
       );
     });
   });
+
+  describe("When it receives a second request with the same ingredient name", () => {
+    test("Then it should respond with 409 and not add a duplicate", async () => {
+      const expectedStatusDuplicate = 409;
+      const expectedErrorMessage = "Este ingrediente ya está en la lista";
+
+      const firstResponse = await request(app)
+        .post("/shopping-list")
+        .send({ name: alcachofa.name })
+        .set("Authorization", `Bearer ${testToken}`);
+
+      expect(firstResponse.status).toBe(201);
+
+      const duplicateResponse = await request(app)
+        .post("/shopping-list")
+        .send({ name: alcachofa.name })
+        .set("Authorization", `Bearer ${testToken}`);
+
+      expect(duplicateResponse.status).toBe(expectedStatusDuplicate);
+      expect(duplicateResponse.body).toEqual({
+        error: expectedErrorMessage,
+      });
+
+      const shoppingList = await ShoppingList.findOne({
+        userId: "test-user-id",
+      }).lean();
+
+      const matchingByName = shoppingList?.ingredients.filter(
+        (ingredient) =>
+          ingredient.name.trim().toLowerCase() ===
+          alcachofa.name.trim().toLowerCase(),
+      );
+
+      expect(matchingByName?.length).toBe(1);
+    });
+  });
 });
