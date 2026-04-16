@@ -60,11 +60,48 @@ class ShoppingListController implements ShoppingListControllerStructure {
       return;
     }
 
+    const trimmedName =
+      typeof ingredientName === "string" ? ingredientName.trim() : "";
+
+    if (!trimmedName) {
+      const error = new ServerError(
+        400,
+        "El nombre del ingrediente es obligatorio",
+      );
+
+      next(error);
+
+      return;
+    }
+
+    const normalizeIngredientName = (name: string): string =>
+      name.trim().toLowerCase();
+
+    const normalizedNewName = normalizeIngredientName(trimmedName);
+
+    const existingList = await this.shopingListModel.findOne({ userId }).lean();
+
+    const hasDuplicate = existingList?.ingredients?.some(
+      (ingredient) =>
+        normalizeIngredientName(ingredient.name) === normalizedNewName,
+    );
+
+    if (hasDuplicate) {
+      const error = new ServerError(
+        409,
+        "Este ingrediente ya está en la lista",
+      );
+
+      next(error);
+
+      return;
+    }
+
     const newIngredientId = new mongoose.Types.ObjectId();
 
     const newIngredient: IngredientStructure = {
       _id: newIngredientId.toString(),
-      name: ingredientName,
+      name: trimmedName,
       category: "otros",
       isPurchased: false,
       createdAt: new Date(),
